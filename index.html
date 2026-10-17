@@ -1,1224 +1,150 @@
-
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#071321">
-  <meta name="description" content="شبیه‌ساز آموزشی تصمیم‌گیری در مهندسی پزشکی">
-  <title>MEDI-DECISION | شبیه‌ساز مهندسی پزشکی</title>
-
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap');
-
-    :root {
-      --bg: #071321;
-      --panel: #0e2033;
-      --panel2: #122941;
-      --cyan: #45def3;
-      --blue: #3988ff;
-      --text: #f2f7ff;
-      --muted: #9bb0c6;
-      --border: rgba(140, 190, 230, .16);
-      --green: #55e5b0;
-      --orange: #ffc078;
-      --red: #ff8192;
-    }
-
-    * { box-sizing: border-box; }
-
-    body {
-      margin: 0;
-      min-height: 100vh;
-      font-family: "Vazirmatn", Tahoma, sans-serif;
-      background:
-        radial-gradient(ellipse at 15% 0%, #123554 0, transparent 42%),
-        radial-gradient(ellipse at 90% 70%, #102640 0, transparent 40%),
-        var(--bg);
-      color: var(--text);
-      line-height: 1.9;
-    }
-
-    button, input { font: inherit; }
-    button { cursor: pointer; }
-
-    .container {
-      width: min(920px, 92%);
-      margin: auto;
-      padding: 24px 0 48px;
-    }
-
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 14px;
-      margin-bottom: 42px;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-size: 1.05rem;
-      font-weight: 800;
-      letter-spacing: .3px;
-    }
-
-    .logo {
-      width: 46px;
-      height: 46px;
-      display: grid;
-      place-items: center;
-      border-radius: 14px;
-      color: var(--cyan);
-      border: 1px solid #2c829c;
-      background: #102c42;
-      font-size: 1.35rem;
-    }
-
-    .status {
-      color: var(--cyan);
-      font-size: .78rem;
-      border: 1px solid #24566d;
-      border-radius: 99px;
-      padding: 5px 12px;
-      white-space: nowrap;
-    }
-
-    .hero {
-      padding: 34px 0 28px;
-      animation: appear .4s ease;
-    }
-
-    .eyebrow {
-      color: var(--cyan);
-      font-size: .82rem;
-      font-weight: 700;
-      letter-spacing: 1px;
-    }
-
-    h1 {
-      font-size: clamp(2rem, 6vw, 3.7rem);
-      line-height: 1.35;
-      margin: 14px 0;
-    }
-
-    h1 span {
-      color: var(--cyan);
-    }
-
-    .intro {
-      color: var(--muted);
-      max-width: 650px;
-      font-size: 1rem;
-    }
-
-    .hero-grid {
-      display: grid;
-      grid-template-columns: 1.1fr .9fr;
-      gap: 16px;
-      margin: 28px 0;
-    }
-
-    .panel {
-      background: linear-gradient(145deg, #10263b, #0b1929);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 24px;
-    }
-
-    .visual {
-      min-height: 230px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      background:
-        radial-gradient(circle, rgba(69, 222, 243, .12), transparent 65%),
-        #0b1a2b;
-      overflow: hidden;
-    }
-
-    .pulse {
-      font-size: 3.5rem;
-      color: var(--cyan);
-      text-shadow: 0 0 28px #2087bd;
-      animation: glow 2s infinite alternate;
-    }
-
-    .signal {
-      width: 100%;
-      max-width: 260px;
-      height: 50px;
-      margin-top: 8px;
-    }
-
-    .signal path {
-      fill: none;
-      stroke: var(--cyan);
-      stroke-width: 2.5;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-
-    .features {
-      display: grid;
-      gap: 12px;
-      margin-top: 16px;
-    }
-
-    .feature {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      color: #dce9f6;
-      font-size: .9rem;
-    }
-
-    .feature span {
-      color: var(--green);
-    }
-
-    .btn {
-      display: inline-flex;
-      justify-content: center;
-      align-items: center;
-      gap: 8px;
-      border: 0;
-      border-radius: 12px;
-      padding: 12px 22px;
-      font-weight: 700;
-      transition: .2s;
-    }
-
-    .btn-primary {
-      color: #031722;
-      background: linear-gradient(110deg, var(--cyan), #78b7ff);
-      box-shadow: 0 6px 25px rgba(69, 222, 243, .13);
-    }
-
-    .btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 30px rgba(69, 222, 243, .25);
-    }
-
-    .btn-secondary {
-      background: #162b40;
-      color: var(--text);
-      border: 1px solid var(--border);
-    }
-
-    .btn:disabled {
-      opacity: .35;
-      cursor: not-allowed;
-      transform: none;
-    }
-
-    .full { width: 100%; }
-
-    .screen {
-      display: none;
-      animation: appear .35s ease;
-    }
-
-    .screen.active { display: block; }
-
-    .progress-box {
-      background: #0e2033;
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 17px 20px;
-      margin-bottom: 22px;
-    }
-
-    .progress-info {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      font-size: .85rem;
-      margin-bottom: 10px;
-    }
-
-    .muted { color: var(--muted); }
-
-    .progress-track {
-      height: 6px;
-      border-radius: 99px;
-      overflow: hidden;
-      background: #21364b;
-    }
-
-    .progress-fill {
-      height: 100%;
-      width: 0;
-      background: linear-gradient(90deg, var(--blue), var(--cyan));
-      border-radius: inherit;
-      transition: width .35s ease;
-    }
-
-    .step-label {
-      color: var(--cyan);
-      font-size: .8rem;
-      font-weight: 700;
-    }
-
-    h2 {
-      font-size: clamp(1.4rem, 4vw, 2rem);
-      line-height: 1.6;
-      margin: 6px 0;
-    }
-
-    .question-desc {
-      color: var(--muted);
-      margin: 8px 0 22px;
-      font-size: .94rem;
-    }
-
-    .options {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 13px;
-    }
-
-    .option {
-      text-align: right;
-      color: var(--text);
-      padding: 18px;
-      background: #0e2033;
-      border: 1px solid var(--border);
-      border-radius: 15px;
-      min-height: 112px;
-      transition: .2s;
-    }
-
-    .option:hover {
-      border-color: #4086a8;
-      background: #122b42;
-      transform: translateY(-2px);
-    }
-
-    .option.selected {
-      border-color: var(--cyan);
-      background: rgba(41, 144, 174, .15);
-      box-shadow: inset 0 0 0 1px rgba(69, 222, 243, .16);
-    }
-
-    .option-icon {
-      display: block;
-      font-size: 1.6rem;
-      margin-bottom: 5px;
-    }
-
-    .option-title {
-      display: block;
-      font-weight: 700;
-      margin-bottom: 4px;
-    }
-
-    .option-desc {
-      display: block;
-      color: var(--muted);
-      font-size: .8rem;
-      line-height: 1.8;
-    }
-
-    .notice {
-      padding: 14px 16px;
-      background: rgba(255, 192, 120, .07);
-      border: 1px solid rgba(255, 192, 120, .2);
-      color: #f5d6b0;
-      border-radius: 12px;
-      font-size: .84rem;
-      margin-top: 22px;
-    }
-
-    .step-actions {
-      display: flex;
-      gap: 12px;
-      justify-content: space-between;
-      margin-top: 24px;
-    }
-
-    .step-actions .btn { min-width: 120px; }
-
-    .result-header {
-      text-align: center;
-      padding: 28px 10px;
-    }
-
-    .result-icon {
-      display: grid;
-      place-items: center;
-      margin: 0 auto 14px;
-      width: 82px;
-      height: 82px;
-      border-radius: 50%;
-      color: var(--cyan);
-      font-size: 2.4rem;
-      background: #12324a;
-      border: 1px solid #246a86;
-    }
-
-    .score {
-      font-size: 3rem;
-      font-weight: 800;
-      color: var(--cyan);
-      line-height: 1.3;
-    }
-
-    .score small {
-      font-size: .95rem;
-      color: var(--muted);
-      font-weight: 500;
-    }
-
-    .result-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 12px;
-      margin: 18px 0;
-    }
-
-    .metric {
-      background: #102439;
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 16px 12px;
-      text-align: center;
-    }
-
-    .metric strong {
-      display: block;
-      font-size: 1.45rem;
-      color: var(--cyan);
-    }
-
-    .metric span {
-      color: var(--muted);
-      font-size: .78rem;
-    }
-
-    .result-section { margin-top: 18px; }
-
-    .result-section h3 {
-      margin: 0 0 12px;
-      font-size: 1.05rem;
-    }
-
-    .report-list {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-
-    .report-list li {
-      padding: 10px 0;
-      border-bottom: 1px solid var(--border);
-      color: #d5e2ef;
-      font-size: .9rem;
-    }
-
-    .report-list li:last-child { border: 0; }
-
-    .report-list b { color: var(--cyan); }
-
-    .advice {
-      padding: 16px;
-      background: rgba(85, 229, 176, .07);
-      border: 1px solid rgba(85, 229, 176, .2);
-      border-radius: 13px;
-      font-size: .9rem;
-    }
-
-    .footer-note {
-      color: var(--muted);
-      font-size: .78rem;
-      text-align: center;
-      margin-top: 28px;
-    }
-
-    .hidden { display: none !important; }
-
-    @keyframes appear {
-      from { opacity: 0; transform: translateY(8px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes glow {
-      from { opacity: .75; }
-      to { opacity: 1; text-shadow: 0 0 35px #2087bd; }
-    }
-
-    @media (max-width: 620px) {
-      header { margin-bottom: 24px; }
-      .hero-grid { grid-template-columns: 1fr; }
-      .visual { min-height: 170px; }
-      .options { grid-template-columns: 1fr; }
-      .option { min-height: auto; }
-      .result-grid { grid-template-columns: 1fr; }
-      .metric { display: flex; justify-content: space-between; align-items: center; }
-      .panel { padding: 18px; }
-      .step-actions .btn { min-width: 0; padding: 10px 15px; }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
-        animation-duration: .01ms !important;
-        transition-duration: .01ms !important;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MEDI-DECISION | شبیه‌ساز پیشرفته مهندسی پزشکی</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:Vazirmatn,Tahoma,sans-serif}
+body{background:#070d1a;color:#e8eef7;min-height:100vh}
+header{background:linear-gradient(135deg,#0b1e3a,#0e3a5d);padding:28px 20px;text-align:center;border-bottom:2px solid #00e5cc}
+header h1{font-size:32px;letter-spacing:1px}header h1 span{color:#00e5cc}
+header p{opacity:.8;margin-top:6px}
+.container{max-width:1000px;margin:0 auto;padding:20px}
+.card{background:#0e1a30;border:1px solid #1e3a5f;border-radius:16px;padding:22px;margin:16px 0;box-shadow:0 8px 30px rgba(0,0,0,.35)}
+.btn{background:#00e5cc;color:#04222e;border:none;padding:12px 22px;border-radius:10px;font-weight:700;cursor:pointer;font-size:15px;margin:6px 4px}
+.btn:hover{filter:brightness(1.1)}.btn.ghost{background:transparent;border:1px solid #00e5cc;color:#00e5cc}.btn.danger{background:transparent;border:1px solid #ff5d6c;color:#ff5d6c}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.device{background:#13253f;border:1px solid #264a7a;border-radius:14px;padding:18px;cursor:pointer;transition:.2s}
+.device:hover{transform:translateY(-3px);border-color:#00e5cc}
+.device h3{margin-bottom:8px}.device small{opacity:.7;line-height:1.9}
+.badge{display:inline-block;background:#132f28;color:#00e5cc;border:1px solid #00e5cc;border-radius:20px;padding:3px 12px;font-size:12px;margin:3px}
+.badge.warn{background:#2f2222;color:#ffb020;border-color:#ffb020}
+.progress{height:10px;background:#1a2c47;border-radius:10px;overflow:hidden;margin:10px 0}
+.progress div{height:100%;background:linear-gradient(90deg,#00e5cc,#3aa0ff);transition:.4s}
+.option{background:#16294a;border:1px solid #2b4f84;border-radius:12px;padding:14px;margin:10px 0;cursor:pointer;text-align:right;width:100%;color:#fff;font-size:15px;line-height:1.9}
+.option:hover{border-color:#00e5cc;background:#1a3358}
+.feedback{border-radius:12px;padding:14px;margin-top:12px;line-height:2;font-size:14px}
+.feedback.good{background:#0d2f26;border:1px solid #00e5cc}
+.feedback.bad{background:#33131a;border:1px solid #ff5d6c}
+.feedback.mid{background:#2e2610;border:1px solid #ffb020}
+table{width:100%;border-collapse:collapse;margin-top:12px;font-size:13.5px}
+th,td{border:1px solid #2b4f84;padding:10px;line-height:1.9;vertical-align:top}
+th{background:#16294a}
+.stats{display:flex;gap:12px;flex-wrap:wrap;margin:12px 0}
+.stat{flex:1;min-width:150px;background:#13253f;border-radius:12px;padding:14px;text-align:center;border:1px solid #264a7a}
+.stat b{font-size:24px;display:block;color:#00e5cc}
+select{background:#0e1a30;color:#fff;border:1px solid #2b4f84;border-radius:8px;padding:10px}
+footer{text-align:center;opacity:.55;font-size:12px;padding:20px;line-height:2}
+@media print{header,.no-print{display:none!important}body{background:#fff;color:#000}.card{background:#fff;color:#000;border:1px solid #000}th,td{border-color:#000;color:#000}}
+.level-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:10px 0}
+</style>
 </head>
-
 <body>
-  <div class="container">
-
-    <header>
-      <div class="brand">
-        <div class="logo">✚</div>
-        <div>
-          MEDI-DECISION
-          <div class="muted" style="font-size:.72rem;font-weight:400">
-            Biomedical Engineering Simulator
-          </div>
-        </div>
-      </div>
-      <div class="status">● حالت آموزشی</div>
-    </header>
-
-    <!-- صفحه شروع -->
-    <section id="home" class="screen active">
-      <div class="hero">
-        <div class="eyebrow">INTERACTIVE CASE SIMULATION</div>
-        <h1>تصمیم درست،<br><span>تفاوت بزرگ</span></h1>
-        <p class="intro">
-          وارد نقش کارشناس مهندسی پزشکی شو. یک پرونده شبیه‌سازی‌شده
-          را بررسی کن، تصمیم بگیر و در پایان گزارش عملکرد اختصاصی خودت
-          را دریافت کن.
-        </p>
-
-        <div class="hero-grid">
-          <div class="panel visual">
-            <div class="pulse">⌁</div>
-            <svg class="signal" viewBox="0 0 260 50" aria-label="نمایش گرافیکی سیگنال">
-              <path d="M0 26 H38 L48 22 L58 30 L70 26 H92 L104 4 L116 45 L130 16 L140 26 H180 L190 20 L200 29 H260"/>
-            </svg>
-            <div class="muted" style="font-size:.8rem;margin-top:10px">
-              BIOMEDICAL SYSTEM // ONLINE
-            </div>
-          </div>
-
-          <div class="panel">
-            <h3 style="margin-top:0">در این پرونده چه می‌کنی؟</h3>
-            <div class="features">
-              <div class="feature"><span>✓</span> بررسی علائم دستگاه</div>
-              <div class="feature"><span>✓</span> انتخاب مسیر عیب‌یابی</div>
-              <div class="feature"><span>✓</span> ارزیابی تصمیم‌های ایمنی</div>
-              <div class="feature"><span>✓</span> دریافت گزارش اختصاصی</div>
-            </div>
-          </div>
-        </div>
-
-        <button class="btn btn-primary full" id="startBtn">
-          شروع شبیه‌سازی ←
-        </button>
-        <div class="notice">
-          این پروژه صرفاً آموزشی است. در محیط درمانی واقعی، ایمنی بیمار،
-          دستورالعمل سازنده و رویه‌های مصوب بیمارستان در اولویت هستند.
-        </div>
-      </div>
-    </section>
-
-    <!-- صفحه مراحل -->
-    <section id="quiz" class="screen">
-      <div class="progress-box">
-        <div class="progress-info">
-          <span id="progressLabel">مرحله ۱ از ۵</span>
-          <span id="progressPercent" class="muted">۲۰٪</span>
-        </div>
-        <div
-          class="progress-track"
-          role="progressbar"
-          aria-label="پیشرفت مراحل"
-          aria-valuemin="0"
-          aria-valuemax="100"
-          aria-valuenow="0"
-          id="progressBar"
-        >
-          <div class="progress-fill" id="progressFill"></div>
-        </div>
-      </div>
-
-      <div class="panel">
-        <div class="step-label" id="stepLabel">CASE / 01</div>
-        <h2 id="questionTitle">انتخاب پرونده</h2>
-        <p class="question-desc" id="questionDesc"></p>
-
-        <div class="options" id="options"></div>
-
-        <div class="notice" id="stepNotice">
-          گزینه‌ها را با توجه به اطلاعات سناریو انتخاب کن.
-        </div>
-
-        <div class="step-actions">
-          <button class="btn btn-secondary" id="backBtn">→ مرحله قبل</button>
-          <button class="btn btn-primary" id="nextBtn" disabled>
-            مرحله بعد ←
-          </button>
-        </div>
-      </div>
-    </section>
-
-    <!-- صفحه نتیجه -->
-    <section id="result" class="screen">
-      <div class="panel">
-        <div class="result-header">
-          <div class="result-icon" id="resultIcon">✦</div>
-          <div class="eyebrow">YOUR CASE REPORT</div>
-          <h2 id="resultTitle">گزارش نهایی</h2>
-          <p id="resultSubtitle" class="muted"></p>
-          <div class="score">
-            <span id="scoreValue">0</span>
-            <small>از ۱۰۰ امتیاز</small>
-          </div>
-        </div>
-
-        <div class="result-grid">
-          <div class="metric">
-            <span>انتخاب‌های ثبت‌شده</span>
-            <strong id="answerCount">0</strong>
-          </div>
-          <div class="metric">
-            <span>امتیاز ایمنی</span>
-            <strong id="safetyValue">0</strong>
-          </div>
-          <div class="metric">
-            <span>وضعیت گزارش</span>
-            <strong id="gradeValue" style="font-size:1rem">—</strong>
-          </div>
-        </div>
-
-        <div class="result-section">
-          <h3>مسیر تصمیم‌گیری تو</h3>
-          <ul class="report-list" id="reportList"></ul>
-        </div>
-
-        <div class="result-section">
-          <h3>تحلیل عملکرد</h3>
-          <div class="advice" id="analysisText"></div>
-        </div>
-
-        <div class="result-section">
-          <h3>پیشنهاد آموزشی اختصاصی</h3>
-          <div class="panel" id="recommendation" style="padding:16px"></div>
-        </div>
-
-        <div class="notice">
-          این امتیاز یک شاخص آموزشی مبتنی بر قواعد همین شبیه‌ساز است؛
-          آزمون صلاحیت حرفه‌ای یا تأیید ایمنی واقعی دستگاه نیست.
-        </div>
-
-        <div class="step-actions" style="flex-wrap:wrap">
-          <button class="btn btn-secondary" id="downloadBtn">
-            ↓ دانلود گزارش
-          </button>
-          <button class="btn btn-primary" id="restartBtn">
-            شروع پرونده جدید ↻
-          </button>
-        </div>
-      </div>
-    </section>
-
-    <div class="footer-note">
-      MEDI-DECISION · پروژه آموزشی مهندسی پزشکی · بدون ثبت اطلاعات در سرور
-    </div>
-  </div>
-
-  <script>
-    "use strict";
-
-    // هر گزینه شامل عنوان، توضیح، امتیاز و شناسه است.
-    // امتیازها قواعد آموزشی این پروژه هستند، نه استاندارد بالینی.
-
-    const steps = [
-      {
-        title: "پرونده را انتخاب کن",
-        desc: "کدام دستگاه را در این سناریوی آموزشی بررسی می‌کنی؟",
-        notice: "انتخاب دستگاه، نشانه‌ها و توصیه‌های مراحل بعد را تغییر می‌دهد.",
-        options: [
-          {
-            id: "ecg",
-            icon: "📈",
-            title: "مانیتور ECG",
-            desc: "هشدار ضربان یا اختلال در سیگنال",
-            points: 0
-          },
-          {
-            id: "spo2",
-            icon: "🫁",
-            title: "پالس‌اکسی‌متر",
-            desc: "نمایش ناپایدار یا قطع مقدار SpO₂",
-            points: 0
-          },
-          {
-            id: "pump",
-            icon: "💧",
-            title: "پمپ تزریق",
-            desc: "هشدار انسداد یا اختلال عملکرد",
-            points: 0
-          }
-        ]
-      },
-      {
-        title: "نشانه مشاهده‌شده چیست؟",
-        desc: "نزدیک‌ترین گزینه به نشانه ثبت‌شده در پرونده را انتخاب کن.",
-        options: [
-          {
-            id: "signal",
-            icon: "〰️",
-            title: "سیگنال ناپایدار",
-            desc: "نمایش قطع‌و‌وصل یا داده متغیر",
-            points: 10
-          },
-          {
-            id: "alarm",
-            icon: "🔔",
-            title: "هشدار مکرر",
-            desc: "هشدار دستگاه تکرار می‌شود",
-            points: 10
-          },
-          {
-            id: "accessory",
-            icon: "🔌",
-            title: "احتمال مشکل اتصال",
-            desc: "اتصال یا لوازم جانبی مشکوک است",
-            points: 10
-          },
-          {
-            id: "unknown",
-            icon: "❔",
-            title: "علت نامشخص",
-            desc: "اطلاعات کافی برای نتیجه‌گیری ندارم",
-            points: 10
-          }
-        ]
-      },
-      {
-        title: "بررسی اولیه را انتخاب کن",
-        desc: "کدام اقدام اولیه با رویکرد ایمن و مرحله‌ای سازگارتر است؟",
-        options: [
-          {
-            id: "inspect",
-            icon: "🔍",
-            title: "بررسی ظاهری و اتصالات",
-            desc: "مشاهده وضعیت کابل‌ها، اتصالات و لوازم جانبی",
-            points: 20
-          },
-          {
-            id: "ignore",
-            icon: "⏭️",
-            title: "نادیده گرفتن هشدار",
-            desc: "فرض کنم هشدار اهمیت ندارد",
-            points: 0
-          },
-          {
-            id: "restart",
-            icon: "🔄",
-            title: "راه‌اندازی مجدد فوری",
-            desc: "بدون بررسی علت، دستگاه را خاموش و روشن کنم",
-            points: 2
-          },
-          {
-            id: "document",
-            icon: "📝",
-            title: "ثبت نشانه‌ها و شرایط",
-            desc: "ثبت پیام هشدار و شرایط مشاهده‌شده",
-            points: 15
-          }
-        ]
-      },
-      {
-        title: "مسیر بررسی را تعیین کن",
-        desc: "با توجه به یافته‌های اولیه، مسیر مناسب بعدی را انتخاب کن.",
-        options: [
-          {
-            id: "manual",
-            icon: "📚",
-            title: "مراجعه به دستورالعمل سازنده",
-            desc: "بررسی پیام هشدار و مراحل مجاز کاربر",
-            points: 20
-          },
-          {
-            id: "expert",
-            icon: "🧑‍🔧",
-            title: "ارجاع به کارشناس مجاز",
-            desc: "در صورت تداوم مشکل، ارزیابی تخصصی",
-            points: 20
-          },
-          {
-            id: "open",
-            icon: "🛠️",
-            title: "باز کردن دستگاه",
-            desc: "باز کردن دستگاه بدون مجوز یا صلاحیت",
-            points: 0
-          },
-          {
-            id: "guess",
-            icon: "🎯",
-            title: "حدس زدن علت خرابی",
-            desc: "انتخاب علت بدون شواهد کافی",
-            points: 0
-          }
-        ]
-      },
-      {
-        title: "تصمیم ایمنی نهایی",
-        desc: "در این سناریو، مشکل هنوز تأیید نشده است. چه تصمیمی می‌گیری؟",
-        options: [
-          {
-            id: "safe",
-            icon: "🛡️",
-            title: "حفظ ایمنی و پیروی از رویه",
-            desc: "اطلاع به مسئول مربوطه و رعایت دستورالعمل بیمارستان",
-            points: 20
-          },
-          {
-            id: "remove",
-            icon: "🚫",
-            title: "خارج کردن از سرویس در صورت لزوم",
-            desc: "اگر ناایمنی محتمل است، اقدام طبق رویه مصوب",
-            points: 20
-          },
-          {
-            id: "continue",
-            icon: "▶️",
-            title: "ادامه استفاده بدون بررسی",
-            desc: "ادامه کار با وجود مشکل حل‌نشده",
-            points: 0
-          },
-          {
-            id: "report",
-            icon: "📋",
-            title: "ثبت و ارجاع مستند",
-            desc: "ثبت وضعیت، هشدارها و اقدام‌های انجام‌شده",
-            points: 15
-          }
-        ]
-      }
-    ];
-
-    const deviceNames = {
-      ecg: "مانیتور ECG",
-      spo2: "پالس‌اکسی‌متر",
-      pump: "پمپ تزریق"
-    };
-
-    const deviceAdvice = {
-      ecg: "اصول سیگنال ECG، وضعیت الکترودها، اتصالات و تشخیص آرتیفکت را مرور کن. هر بررسی باید مطابق دستورالعمل دستگاه انجام شود.",
-      spo2: "عوامل مؤثر بر کیفیت سیگنال پالس‌اکسی‌متری، جای‌گیری حسگر و محدودیت‌های اندازه‌گیری را مطالعه کن.",
-      pump: "مفهوم هشدار انسداد، مجموعه تزریق، رویه‌های ایمنی و دستورالعمل اختصاصی سازنده را مرور کن. تغییر تنظیمات یا دست‌کاری دستگاه بدون صلاحیت مجاز نیست."
-    };
-
-    const state = {
-      step: 0,
-      answers: {}
-    };
-
-    const $ = id => document.getElementById(id);
-
-    function showScreen(id) {
-      document.querySelectorAll(".screen").forEach(screen => {
-        screen.classList.remove("active");
-      });
-      $(id).classList.add("active");
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-
-    function start() {
-      state.step = 0;
-      state.answers = {};
-      showScreen("quiz");
-      renderStep();
-    }
-
-    function getOptions(stepIndex) {
-      const base = steps[stepIndex];
-
-      // تغییر گزینه‌ها بر اساس دستگاه انتخاب‌شده
-      if (stepIndex === 1) {
-        const device = state.answers[0];
-
-        if (device === "ecg") {
-          return [
-            {
-              id: "signal",
-              icon: "〰️",
-              title: "سیگنال ECG نامنظم",
-              desc: "موج نمایش‌داده‌شده ناپایدار است",
-              points: 10
-            },
-            {
-              id: "alarm",
-              icon: "🔔",
-              title: "هشدار لید یا ضربان",
-              desc: "پیام هشدار روی مانیتور دیده می‌شود",
-              points: 10
-            },
-            {
-              id: "accessory",
-              icon: "🔌",
-              title: "اتصال الکترود مشکوک",
-              desc: "احتمال مشکل اتصال وجود دارد",
-              points: 10
-            },
-            {
-              id: "unknown",
-              icon: "❔",
-              title: "علت نامشخص",
-              desc: "برای نتیجه‌گیری اطلاعات کافی نیست",
-              points: 10
-            }
-          ];
-        }
-
-        if (device === "spo2") {
-          return [
-            {
-              id: "signal",
-              icon: "〰️",
-              title: "مقدار متغیر",
-              desc: "مقدار نمایش‌داده‌شده پایدار نیست",
-              points: 10
-            },
-            {
-              id: "alarm",
-              icon: "🔔",
-              title: "هشدار حسگر",
-              desc: "دستگاه پیام هشدار نشان می‌دهد",
-              points: 10
-            },
-            {
-              id: "accessory",
-              icon: "🔌",
-              title: "اتصال حسگر مشکوک",
-              desc: "اتصال یا جای‌گیری حسگر نیاز به بررسی دارد",
-              points: 10
-            },
-            {
-              id: "unknown",
-              icon: "❔",
-              title: "علت نامشخص",
-              desc: "برای نتیجه‌گیری اطلاعات کافی نیست",
-              points: 10
-            }
-          ];
-        }
-
-        return [
-          {
-            id: "signal",
-            icon: "〰️",
-            title: "هشدار عملکرد",
-            desc: "عملکرد دستگاه نیازمند بررسی است",
-            points: 10
-          },
-          {
-            id: "alarm",
-            icon: "🔔",
-            title: "هشدار انسداد",
-            desc: "پیام انسداد در سناریو نمایش داده می‌شود",
-            points: 10
-          },
-          {
-            id: "accessory",
-            icon: "🔌",
-            title: "مجموعه تزریق مشکوک",
-            desc: "مسیر یا اتصالات نیازمند بررسی هستند",
-            points: 10
-          },
-          {
-            id: "unknown",
-            icon: "❔",
-            title: "علت نامشخص",
-            desc: "اطلاعات کافی برای نتیجه‌گیری ندارم",
-            points: 10
-          }
-        ];
-      }
-
-      if (stepIndex === 2) {
-        const symptom = state.answers[1];
-
-        if (symptom === "accessory") {
-          return [
-            {
-              id: "inspect",
-              icon: "🔍",
-              title: "بررسی ظاهری اتصال",
-              desc: "بررسی وضعیت اتصالات طبق دستورالعمل",
-              points: 20
-            },
-            {
-              id: "document",
-              icon: "📝",
-              title: "ثبت نشانه‌ها",
-              desc: "ثبت پیام هشدار و شرایط مشاهده‌شده",
-              points: 15
-            },
-            {
-              id: "ignore",
-              icon: "⏭️",
-              title: "نادیده گرفتن مشکل",
-              desc: "ادامه کار بدون بررسی",
-              points: 0
-            },
-            {
-              id: "restart",
-              icon: "🔄",
-              title: "راه‌اندازی مجدد فوری",
-              desc: "بدون بررسی علت",
-              points: 2
-            }
-          ];
-        }
-
-        return base.options;
-      }
-
-      return base.options;
-    }
-
-    function renderStep() {
-      const i = state.step;
-      const step = steps[i];
-      const options = getOptions(i);
-      const selected = state.answers[i];
-
-      $("stepLabel").textContent =
-        "CASE / " + String(i + 1).padStart(2, "0");
-
-      $("questionTitle").textContent = step.title;
-      $("questionDesc").textContent = step.desc;
-      $("stepNotice").textContent = step.notice ||
-        "یک گزینه را انتخاب کن. انتخاب تو در گزارش نهایی ثبت خواهد شد.";
-
-      $("progressLabel").textContent = `مرحله ${i + 1} از ${steps.length}`;
-      const percent = Math.round(((i + 1) / steps.length) * 100);
-      $("progressPercent").textContent = percent + "٪";
-      $("progressFill").style.width = percent + "%";
-      $("progressBar").setAttribute("aria-valuenow", percent);
-
-      $("options").innerHTML = "";
-
-      options.forEach(option => {
-        const button = document.createElement("button");
-        button.type = "button";
-        button.className = "option" +
-          (selected === option.id ? " selected" : "");
-
-        button.setAttribute("aria-pressed", selected === option.id);
-
-        const icon = document.createElement("span");
-        icon.className = "option-icon";
-        icon.textContent = option.icon;
-
-        const title = document.createElement("span");
-        title.className = "option-title";
-        title.textContent = option.title;
-
-        const desc = document.createElement("span");
-        desc.className = "option-desc";
-        desc.textContent = option.desc;
-
-        button.append(icon, title, desc);
-
-        button.addEventListener("click", () => {
-          state.answers[i] = option.id;
-
-          // پاسخ مراحل بعد از تغییر انتخاب قبلی حذف می‌شود.
-          for (let j = i + 1; j < steps.length; j++) {
-            delete state.answers[j];
-          }
-
-          renderStep();
-        });
-
-        $("options").appendChild(button);
-      });
-
-      $("backBtn").disabled = i === 0;
-      $("nextBtn").disabled = !selected;
-      $("nextBtn").textContent =
-        i === steps.length - 1 ? "مشاهده گزارش ←" : "مرحله بعد ←";
-    }
-
-    function getSelectedOption(stepIndex) {
-      const options = getOptions(stepIndex);
-      return options.find(
-        option => option.id === state.answers[stepIndex]
-      );
-    }
-
-    function calculateResult() {
-      let earned = 0;
-      let maximum = 0;
-
-      steps.forEach((step, index) => {
-        const selected = getSelectedOption(index);
-        if (!selected) return;
-
-        const options = getOptions(index);
-        const best = Math.max(...options.map(o => o.points));
-
-        earned += selected.points;
-        maximum += best;
-      });
-
-      const score = maximum
-        ? Math.round((earned / maximum) * 100)
-        : 0;
-
-      const safetyOption = getSelectedOption(4);
-      const safetyScore = safetyOption
-        ? Math.round((safetyOption.points / 20) * 100)
-        : 0;
-
-      return { score, safetyScore };
-    }
-
-    function buildReport() {
-      const { score, safetyScore } = calculateResult();
-      const device = state.answers[0];
-      const symptom = getSelectedOption(1);
-      const initial = getSelectedOption(2);
-      const route = getSelectedOption(3);
-      const safety = getSelectedOption(4);
-
-      let title;
-      let subtitle;
-      let analysis;
-      let grade;
-
-      if (score >= 85) {
-        title = "تحلیل‌گر دقیق";
-        subtitle = "در این سناریو، رویکرد تو با اصول آموزشی امتیازدهی سازگاری بالایی دارد.";
-        analysis = "انتخاب‌های تو در مجموع با بررسی مرحله‌ای و توجه به ایمنی سازگار بودند. در محیط واقعی نیز باید شواهد، دستورالعمل سازنده و رویه مصوب ملاک تصمیم باشند.";
-        grade = "عالی";
-      } else if (score >= 65) {
-        title = "کارشناس در حال پیشرفت";
-        subtitle = "بخش مهمی از تصمیم‌ها مناسب بود؛ چند نکته برای مرور باقی مانده است.";
-        analysis = "مسیر انتخابی تو نقاط قوتی دارد، اما بهتر است پیش از هر اقدام، شواهد موجود را ثبت کنی و از حدس زدن علت خرابی پرهیز کنی.";
-        grade = "خوب";
-      } else {
-        title = "نیازمند بررسی بیشتر";
-        subtitle = "این پرونده فرصت خوبی برای مرور اصول عیب‌یابی و ایمنی است.";
-        analysis = "برخی انتخاب‌ها با رویکرد محتاطانه و مستند فاصله داشتند. هشدار را نادیده نگیر، دستگاه را بدون صلاحیت باز نکن و در شرایط نامطمئن از رویه ارجاع استفاده کن.";
-        grade = "نیازمند مرور";
-      }
-
-      $("resultIcon").textContent = score >= 85 ? "✦" : "⌁";
-      $("resultTitle").textContent = title;
-      $("resultSubtitle").textContent = subtitle;
-      $("scoreValue").textContent = score;
-      $("answerCount").textContent = Object.keys(state.answers).length;
-      $("safetyValue").textContent = safetyScore;
-      $("gradeValue").textContent = grade;
-      $("analysisText").textContent = analysis;
-      $("recommendation").textContent = deviceAdvice[device];
-
-      const reportItems = [
-        ["دستگاه انتخابی", deviceNames[device]],
-        ["نشانه ثبت‌شده", symptom.title],
-        ["بررسی اولیه", initial.title],
-        ["مسیر بررسی", route.title],
-        ["تصمیم ایمنی", safety.title]
-      ];
-
-      $("reportList").innerHTML = "";
-
-      reportItems.forEach(([label, value]) => {
-        const li = document.createElement("li");
-        const b = document.createElement("b");
-        b.textContent = label + ": ";
-        li.append(b, document.createTextNode(value));
-        $("reportList").appendChild(li);
-      });
-    }
-
-    function showResult() {
-      buildReport();
-      showScreen("result");
-    }
-
-    function downloadReport() {
-      const { score, safetyScore } = calculateResult();
-      const device = deviceNames[state.answers[0]];
-
-      const lines = [
-        "MEDI-DECISION | گزارش شبیه‌سازی آموزشی",
-        "========================================",
-        "دستگاه: " + device,
-        "امتیاز کل: " + score + " از 100",
-        "امتیاز ایمنی: " + safetyScore + " از 100",
-        "",
-        "مسیر تصمیم‌گیری:"
-      ];
-
-      steps.forEach((step, index) => {
-        const selected = getSelectedOption(index);
-        if (selected) {
-          lines.push((index + 1) + ". " + step.title + ": " + selected.title);
-        }
-      });
-
-      lines.push(
-        "",
-        "پیشنهاد آموزشی:",
-        deviceAdvice[state.answers[0]],
-        "",
-        "این گزارش صرفاً آموزشی است و تأیید صلاحیت حرفه‌ای یا ایمنی دستگاه نیست."
-      );
-
-      // BOM برای نمایش صحیح فارسی در برخی برنامه‌های متنی
-      const blob = new Blob(
-        ["\uFEFF" + lines.join("\n")],
-        { type: "text/plain;charset=utf-8" }
-      );
-
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "medi-decision-report.txt";
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      URL.revokeObjectURL(url);
-    }
-
-    $("startBtn").addEventListener("click", start);
-
-    $("nextBtn").addEventListener("click", () => {
-      if (state.answers[state.step] === undefined) return;
-
-      if (state.step < steps.length - 1) {
-        state.step++;
-        renderStep();
-      } else {
-        showResult();
-      }
-    });
-
-    $("backBtn").addEventListener("click", () => {
-      if (state.step > 0) {
-        state.step--;
-        renderStep();
-      }
-    });
-
-    $("restartBtn").addEventListener("click", start);
-    $("downloadBtn").addEventListener("click", downloadReport);
-
-  </script>
+<header>
+<h1>MEDI-DECISION <span>//</span> مهندسی پزشکی</h1>
+<p>شبیه‌ساز تعاملی عیب‌یابی تجهیزات بیمارستانی — نسخه‌ی نمونه‌کار حرفه‌ای</p>
+</header>
+<div class="container">
+<div id="app"></div>
+<footer>پروژه‌ی صرفاً آموزشی — در محیط واقعی، پروتکل بیمارستان و دفترچه‌ی سازنده ملاک است.<br>طراحی‌شده برای GitHub Pages | تک‌فایل HTML/CSS/JS</footer>
+</div>
+<script>
+const SCENARIOS = {
+ecg:{title:"مانیتور ECG",icon:"❤️",desc:"نویز و آلارم کاذب تاکی‌کاردی در بخش مراقبت ویژه",levels:{
+easy:[{q:"بیمار ۶۵ ساله، مانیتور ECG نویز شدید و آلارم VT کاذب می‌دهد. بیمار هوشیار و پالس لمسی طبیعی. اولین اقدام؟",d:"اصل اول: بیمار یا دستگاه؟ همیشه وضعیت بالینی بیمار مقدم است.",opts:[{t:"بررسی علائم حیاتی بیمار و پالس واقعی، بعد بررسی دستگاه",s:20,safe:20,f:"آفرین! قانون طلایی: اول بیمار، بعد دستگاه. این انتخاب هم ایمن است هم اصولی.",c:"پایداری بیمار تأیید شد؛ مسیر به بررسی الکترود می‌رود."},{t:"سریع آلارم را Mute کن و ادامه بده",s:2,safe:-10,f:"خطای ایمنی مهم: ساکت‌کردن آلارم بدون بررسی، ریسک از دست رفتن آریتمی واقعی دارد.",c:"آلارم واقعی بعدی ممکن است شنیده نشود."},{t:"بلافاصله کابل ECG را تعویض کن",s:8,safe:5,f:"اقدام فنی درست ولی زودهنگام؛ اول باید بیمار تأیید می‌شد.",c:"بدون تأیید بیمار، تعویض قطعه ارزش تشخیصی ندارد."}]},
+{q:"پالس بیمار طبیعی است. روی صفحه خط مبنای موج‌دار و قطع‌ووصلی دیده می‌شود. محتمل‌ترین علت؟",d:"نویز حرکتی و تماس پوستی ضعیف شایع‌ترین علت است.",opts:[{t:"خشکی ژل و چسبندگی ضعیف الکترود / حرکت بیمار",s:20,safe:10,f:"درست است. امپدانس پوستی بالا شایع‌ترین علت آرتیفکت است.",c:"مسیر: تمیزکردن پوست و تعویض الکترود."},{t:"خرابی برد اصلی مانیتور",s:0,safe:0,f:"خطای تصمیم‌گیری: پرش به بدترین سناریو بدون رد علل ساده. عیب‌یابی همیشه از ساده به پیچیده.",c:"برد آخرین گزینه است نه اولین."},{t:"تداخل الکتروسرجری",s:5,safe:5,f:"الکتروسرجری نویز فرکانس بالا می‌دهد ولی این بیمار در ICU است و دستگاه فعالی نیست.",c:"زمینه‌ی بالینی را با سناریو تطبیق بده."}]},
+{q:"الکترودها خشک‌اند. اقدام استاندارد؟",d:"آماده‌سازی پوست طبق دستورالعمل سازنده.",opts:[{t:"تمیزکردن پوست با الکل، خشک‌کردن، الکترود جدید با تاریخ معتبر",s:20,safe:15,f:"عالی. همین سه کار ۸۰٪ آرتیفکت‌ها را حل می‌کند.",c:"نویز حذف شد."},{t:"همان الکترود را با چسب محکم‌تر بچسبان",s:2,safe:-5,f:"خطا: ژل خشک‌شده با فشار درست نمی‌شود و ریسک سوختگی خفیف و سیگنال ضعیف می‌ماند.",c:"استفاده‌ی مجدد از الکترود یک‌بارمصرف ممنوع."},{t:"گین مانیتور را زیاد کن تا موج بهتر دیده شود",s:0,safe:-10,f:"خطای ایمنی: دست‌کاری گین، مشکل تماس را پنهان می‌کند.",c:"تنظیمات را برای پوشاندن عیب تغییر نده."}]},
+{q:"نویز ماند. کابل و لیدها مشکوک‌اند. چه می‌کنی؟",d:"تست پیوستگی کابل و بررسی شکستگی.",opts:[{t:"بازرسی چشمی، تمیزکردن کانکتور، تست با کابل سالم جایگزین",s:20,safe:10,f:"روش استاندارد عیب‌یابی تفاضلی: جایگزینی با نمونه‌ی سالم.",c:"مشخص می‌شود عیب از کابل است یا مانیتور."},{t:"کابل را تکان بده تا درست شود",s:0,safe:-10,f:"خطا: اتصالی لحظه‌ای خطر اختلال و برق‌گرفتگی دارد.",c:"هرگز با قطعه‌ی مشکوک مدارا نکن."}]},
+{q:"با کابل سالم مشکل حل شد. اقدام پایانی؟",d:"مستندسازی و پیشگیری.",opts:[{t:"ثبت در لاگ، برچسب خرابی روی کابل معیوب، درخواست تست نشتی الکتریکی دوره‌ای",s:20,safe:15,f:"رفتار حرفه‌ای کامل: مستندسازی + ایزوله‌کردن قطعه‌ی خراب + PM.",c:"پرونده با موفقیت بسته شد."},{t:"کابل خراب را دور بینداز بدون ثبت",s:5,safe:0,f:"ناقص: بدون ثبت، خرابی تکرار می‌شود.",c:"گزارش‌نویسی بخشی از ایمنی است."}]}],
+medium:[{q:"همان کیس ولی بیمار بی‌قرار و تعریق شدید دارد + نویز ECG. انتخاب؟",d:"تعریق امپدانس را بالا می‌برد.",opts:[{t:"خشک‌کردن پوست، الکترود فومی ضدتعریق، بررسی اتصال زمین تخت",s:20,safe:15,f:"درست. تعریق + حرکت = بدترین ترکیب برای ECG.",c:"زمین مشترک تخت و مانیتور هم چک شد."},{t:"آرام‌بخش تجویز کن",s:0,safe:-15,f:"خطای حیطه: تصمیم دارویی خارج از صلاحیت مهندسی پزشکی.",c:"در نقش خود بمان."}]}],
+advanced:[{q:"در اتاق عمل هم‌زمان الکتروسرجری فعال است و ECG کاملاً محو می‌شود. اقدام مهندسی؟",d:"تداخل فرکانس بالای ESU.",opts:[{t:"فعال‌سازی فیلتر ESU مانیتور، کوتاه‌کردن مسیر کابل‌ها، جدا کردن سیم زمین ESU از کابل ECG",s:20,safe:20,f:"پاسخ متخصص: مدیریت سازگاری الکترومغناطیسی.",c:"ایمنی بیمار و تیم حفظ شد."},{t:"مانیتور را خاموش کن تا جراحی تمام شود",s:0,safe:-20,f:"خطای بحرانی: پایش حین بیهوشی هرگز قطع نمی‌شود.",c:"این انتخاب مردود ایمنی است."}]}]
+}},
+spo2:{title:"پالس‌اکسی‌متر",icon:"🩸",desc:"افت SpO2 کاذب و عدم تطابق با بیمار",levels:{
+easy:[{q:"SpO2 روی ۸۲٪ ثابت مانده ولی بیمار هوشیار، بدون سیانوز و تنفس طبیعی. اول؟",d:"پالس‌اکسی‌متر به پرفیوژن و نور حساس است.",opts:[{t:"بررسی بیمار + لمس نبض + جابه‌جایی پروب به انگشت گرم‌تر",s:20,safe:20,f:"عالی: رد علت بالینی، بعد علت تکنیکال.",c:"پروفیوژن سرد محتمل است."},{t:"بلافاصله اکسیژن بیمار را زیاد کن",s:0,safe:-15,f:"خطای حیطه و ایمنی: تغییر درمان بدون تأیید پزشک و بدون داده‌ی معتبر.",c:"عدد مشکوک مبنای درمان نیست."},{t:"دستگاه را خراب اعلام کن",s:2,safe:0,f:"شتاب‌زده: ۹۰٪ موارد پروب و محل نصب است.",c:"از ساده شروع کن."}]},
+{q:"انگشت سرد و لاک ناخن دارد. اقدام؟",d:"نور محیط و مانع نوری.",opts:[{t:"پاک‌کردن لاک، گرم‌کردن دست، پروب متناسب با سایز، پوشاندن با کاور ضد نور",s:20,safe:15,f:"کامل و استاندارد.",c:"سیگنال قوی‌تر شد."},{t:"پروب را محکم‌تر با چسب ببند",s:0,safe:-10,f:"خطا: فشار زیاد پرفیوژن را بدتر و عدد را کاذب‌تر می‌کند.",c:"فشار وریدی، پالس شریانی را خراب می‌کند."}]},
+{q:"بیمار لرزش دارد و منحنی Pleth نامنظم است. تفسیر؟",d:"آرتیفکت حرکتی.",opts:[{t:"آرتیفکت حرکتی؛ ثابت‌کردن دست و تغییر محل به لاله‌ی گوش/پیشانی در صورت امکان",s:20,safe:10,f:"درست. الگوریتم دستگاه حرکت را با پالس اشتباه می‌گیرد.",c:"کیفیت سیگنال (SQI) بررسی شد."},{t:"آریتمی قلبی",s:5,safe:0,f:"بدون تأیید ECG نمی‌توان گفت.",c:"تک‌منبعی تصمیم نگیر."}]},
+{q:"با پروب نوزاد روی بزرگسال عدد خطا می‌دهد. علت؟",d:"تطابق پروب.",opts:[{t:"عدم تطابق طول‌موج LED و فتودیود با سایز؛ تعویض با پروب بزرگسال سازگار با مدل دستگاه",s:20,safe:15,f:"نکته‌ی فنی دقیق: کالیبراسیون هر پروب با دستگاه خودش.",c:"سازگاری مدل چک شد."},{t:"باتری دستگاه",s:0,safe:0,f:"ربطی ندارد.",c:"مسیر اشتباه."}]},
+{q:"اقدام پایانی بخش؟",d:"کنترل دوره‌ای.",opts:[{t:"تست با شبیه‌ساز SpO2 (فلومتر نوری)، ثبت QA و آموزش پرستار",s:20,safe:15,f:"رفتار حرفه‌ای: کالیبراسیون عملکردی + آموزش.",c:"پرونده بسته شد."},{t:"تحویل بدون ثبت",s:3,safe:0,f:"ناقص.",c:"مستندسازی لازم است."}]}],
+medium:[{q:"بیمار مسمومیت با CO مشکوک است و SpO2 عدد ۹۸٪ نشان می‌دهد. اعتماد می‌کنی؟",d:"پالس‌اکسی‌متر معمولی COHb را از O2Hb تفکیک نمی‌کند.",opts:[{t:"خیر؛ نیاز به کواکسی‌متر / گاز خون؛ گزارش به پزشک",s:20,safe:20,f:"نکته‌ی پیشرفته و حیاتی.",c:"محدودیت تکنولوژی شناخته شد."},{t:"بله، عدد نرمال است",s:0,safe:-20,f:"خطای بحرانی.",c:"در CO عدد کاذب طبیعی می‌دهد."}]}],
+advanced:[{q:"در NICU نور فتوتراپی باعث اختلال SpO2 شده. راه‌حل مهندسی؟",d:"تداخل نوری.",opts:[{t:"کاور opaque روی پروب، دورکردن سنسور از نور مستقیم، چک چرخه‌ی PM",s:20,safe:15,f:"درست.",c:"تداخل حذف شد."},{t:"خاموش‌کردن فتوتراپی",s:0,safe:-15,f:"خارج از حیطه و خطرناک.",c:"درمان را قطع نکن."}]}]
+}},
+pump:{title:"پمپ تزریق",icon:"💉",desc:"آلارم Occlusion مکرر و تأخیر دارورسانی",levels:{
+easy:[{q:"پمپ آلارم Occlusion می‌دهد ولی مسیر وریدی باز به نظر می‌رسد. اول؟",d:"ایمنی دارویی.",opts:[{t:"توقف پمپ، بستن کلمپ، بررسی بیمار (تورم، برگشت خون) بعد بررسی ست و مسیر",s:20,safe:20,f:"ترتیب ایمن استاندارد.",c:"بیمار در اولویت."},{t:"آلارم را ریست کن و Start بزن",s:0,safe:-15,f:"خطای بحرانی: بولوس ناخواسته پس از رفع انسداد.",c:"ریست کور ممنوع."},{t:"فشار تزریق را زیاد کن",s:0,safe:-10,f:"خطر پارگی ورید و اکستراوازیشن.",c:"فشار راه‌حل نیست."}]},
+{q:"ست تزریق تا خورده و فیلتر هوا حباب دارد. اقدام؟",d:"هوا در مسیر.",opts:[{t:"صاف‌کردن مسیر، هواگیری کامل ست، بررسی Air-in-line sensor",s:20,safe:15,f:"درست. هوای وریدی خطر آمبولی.",c:"سنسور هوا تمیز شد."},{t:"حباب کوچک مهم نیست، ادامه بده",s:0,safe:-20,f:"خطای ایمنی: حتی حجم کم در نوزاد/مغزی خطرناک است.",c:"استاندارد: صفر حباب."}]},
+{q:"نرخ تزریق با دستور پزشک نمی‌خواند (ml/h اشتباه). علت؟",d:"خطای برنامه‌ریزی.",opts:[{t:"تطبیق مجدد نسخه با تنظیم پمپ + استفاده از Drug Library و DERS",s:20,safe:20,f:"حرفه‌ای: کتابخانه‌ی دارویی جلوی خطای دوز را می‌گیرد.",c:"دوز راستی‌آزمایی شد."},{t:"حدس بزن و اصلاح کن",s:0,safe:-15,f:"در دارو حدس ممنوع.",c:"فقط از روی دستور کتبی."}]},
+{q:"پمپ با باتری سریع خالی می‌کند. بررسی مهندسی؟",d:"مدیریت باتری.",opts:[{t:"تست ظرفیت باتری، چک سیکل شارژ، بررسی سوکت برق و کالیبراسیون",s:20,safe:10,f:"روش PM استاندارد.",c:"باتری فرسوده شناسایی شد."},{t:"همیشه با برق بزن، باتری مهم نیست",s:2,safe:-5,f:"در انتقال بیمار باتری حیاتی است.",c:"سناریوی انتقال را فراموش نکن."}]},
+{q:"پایان کار؟",d:"تحویل ایمن.",opts:[{t:"تست دقت با burette، برچسب کالیبراسیون، ثبت و آموزش",s:20,safe:15,f:"چرخه‌ی کامل مدیریت تجهیزات.",c:"پمپ برگشت به مدار."},{t:"تحویل شفاهی",s:3,safe:0,f:"ناقص.",c:"ثبت کتبی لازم است."}]}],
+medium:[{q:"پمپ نوزادان با VTBI کم، آلارم Air مکرر کاذب. اقدام؟",d:"حساسیت سنسور.",opts:[{t:"تمیزکردن سنسور اولتراسونیک، ست مخصوص نوزاد، پرایم کامل بدون میکروحباب",s:20,safe:15,f:"دقیق.",c:"حساسیت نوزادی درنظر گرفته شد."},{t:"غیرفعال‌کردن سنسور هوا",s:0,safe:-20,f:"خطای بحرانی: غیرفعال‌سازی اینترلاک ایمنی ممنوع.",c:"اینترالاک هرگز bypass نمی‌شود."}]}],
+advanced:[{q:"دو پمپ هم‌مدل دقت متفاوت دارند (±۱۲٪). اقدام سطح بیمارستان؟",d:"مدیریت ناوگان.",opts:[{t:"خارج از سرویس، تست دبی با آنالایزر، کالیبراسیون، برچسب و گزارش به مدیر تجهیزات",s:20,safe:15,f:"نگاه مدیریتی حرفه‌ای.",c:"انحراف از تلرانس سازنده پیگیری شد."},{t:"میانگین بگیر و استفاده کن",s:0,safe:-15,f:"در دارودرمانی خطا قابل چشم‌پوشی نیست.",c:"استاندارد: طبق تلرانس سازنده."}]}]
+}},
+esu:{title:"الکتروسرجری",icon:"⚡",desc:"سوختگی محل پلیت و دود زیاد حین جراحی",levels:{
+easy:[{q:"بعد از عمل، سوختگی درجه ۲ زیر پلیت بیمار دیده شد. محتمل‌ترین علت؟",d:"مدار برگشتی.",opts:[{t:"تماس ناقص پلیت، محل نصب پرمو/استخوانی، پلیت خشک یا مصرف مجدد",s:20,safe:20,f:"کلاسیک‌ترین علت سوختگی ESU همین است.",c:"مسیر به پروتکل پلیت می‌رود."},{t:"قدرت بالای ژنراتور توسط جراح",s:8,safe:5,f:"ممکن است ولی دومین علت است؛ اول مدار برگشت.",c:"ترتیب عیب‌یابی مهم است."},{t:"حساسیت پوستی بیمار",s:0,safe:0,f:"سوختگی ESU حرارتی است نه آلرژیک.",c:"مکانیسم را اشتباه گرفتی."}]},
+{q:"پلیت استاندارد کجاست؟",d:"placement.",opts:[{t:"عضله‌ی بزرگ، تمیز، خشک، بدون مو، نزدیک محل جراحی، تمام سطح چسبیده",s:20,safe:20,f:"پروتکل طلایی REM/CQM.",c:"امپدانس تماسی پایین آمد."},{t:"روی زخم، خالکوبی یا پروتز فلزی",s:0,safe:-20,f:"خطای بحرانی: تمرکز جریان = سوختگی شدید.",c:"این نواحی ممنوع مطلق‌اند."}]},
+{q:"حین Cut دود زیاد و برش کند است. بررسی؟",d:"الکترود فعال.",opts:[{t:"تمیزکردن eschar از نوک الکترود، چک اتصال هندپیس، تنظیم توان طبق توصیه‌ی سازنده",s:20,safe:10,f:"eschar امپدانس را بالا و برش را خراب می‌کند.",c:"بدون افزایش کور توان حل شد."},{t:"توان را تا آخر زیاد کن",s:0,safe:-15,f:"خطر نکروز عمقی و آتش‌سوزی.",c:"توان آخرین راه است."}]},
+{q:"بیمار پیس‌میکر دارد و ESU لازم است. اقدام ایمن؟",d:"تداخل با ایمپلنت.",opts:[{t:"هماهنگی با متخصص قلب/بیهوشی، حالت Bipolar، حداقل توان، پلیت دور از پیس‌میکر، مانیتورینگ مداوم",s:20,safe:20,f:"پروتکل بیمار پرخطر کامل.",c:"ریسک مهار پیس‌میکر مدیریت شد."},{t:"مثل معمول ادامه بده",s:0,safe:-20,f:"بحرانی: امکان مهار یا آسیب پیس‌میکر.",c:"بیمار پرخطر پروتکل جدا دارد."}]},
+{q:"اقدام پایانی مهندسی؟",d:"PM.",opts:[{t:"تست توان خروجی با آنالایزر ESU، تست REM، ثبت و آموزش تیم اتاق عمل",s:20,safe:15,f:"چرخه‌ی کامل مدیریت ریسک.",c:"دستگاه با برچسب سلامت برگشت."},{t:"فقط تمیزکردن دستگاه",s:3,safe:0,f:"کافی نیست.",c:"تست عملکردی لازم است."}]}],
+medium:[{q:"بیمار دچار تحریک عضلانی حین Coag شد. علت مهندسی؟",d:"فرکانس و اتصال.",opts:[{t:"نشتی فرکانس پایین، اتصال زمین نامناسب، خرابی ایزولاسیون هندپیس",s:20,safe:15,f:"تحلیل دقیق.",c:"ایزولاسیون با تستر چک شد."},{t:"طبیعی است",s:0,safe:-10,f:"ESU استاندارد تحریک فارادیک نمی‌دهد.",c:"غیرطبیعی را عادی نگیر."}]}],
+advanced:[{q:"آتش‌سوزی کوچک به‌علت الکل ضدعفونی + ESU. اقدام سیستمی؟",d:"مثلث آتش.",opts:[{t:"پروتکل ضد حریق: خشک‌شدن کامل الکل، اکسیژن کنترل‌شده، دراپ‌بندی، آموزش و چک‌لیست",s:20,safe:20,f:"مدیریت سیستمی ایمنی.",c:"ریسک سیستمیک بسته شد."},{t:"مقصر پرستار است",s:0,safe:-10,f:"نگاه سرزنش فردی ضد ایمنی بیمار است.",c:"سیستم را اصلاح کن نه فرد را."}]}]
+}}
+};
+let state={screen:"home",device:null,level:"easy",step:0,path:[],score:0,safety:0,done:{}};
+function load(){try{const d=JSON.parse(localStorage.getItem("medi_adv")||"{}");if(d.done)state.done=d.done;}catch(e){}}
+function save(){localStorage.setItem("medi_adv",JSON.stringify({done:state.done}))}
+load();
+function qs(dev,lv){const s=SCENARIOS[dev];if(lv==="easy")return s.levels.easy;if(lv==="medium")return s.levels.easy.concat(s.levels.medium);return s.levels.easy.concat(s.levels.medium, s.levels.advanced);}
+function render(){
+const app=document.getElementById("app");
+if(state.screen==="home"){
+app.innerHTML=`<div class="card"><h2>انتخاب مأموریت آموزشی</h2><p style="opacity:.75;line-height:2;margin:8px 0">سطح را انتخاب کن، دستگاه را بزن و پرونده را مرحله‌به‌مرحله حل کن. پیشرفتت ذخیره می‌شود.</p>
+<div class="level-row no-print"><label>سطح دشواری:</label><select id="lv" onchange="setLevel(this.value)"><option value="easy">🟢 آسان (۵ مرحله)</option><option value="medium">🟡 متوسط (۶ مرحله)</option><option value="advanced">🔴 پیشرفته (۷ مرحله)</option></select></div>
+<div class="grid">${Object.keys(SCENARIOS).map(k=>`<div class="device" onclick="startCase('${k}')"><h3>${SCENARIOS[k].icon} ${SCENARIOS[k].title}</h3><small>${SCENARIOS[k].desc}</small><br><span class="badge">${state.done[k]?"✅ تکمیل‌شده":"⬜ انجام‌نشده"}</span><span class="badge warn">${SCENARIOS[k].levels.easy.length} تا ۷ مرحله</span></div>`).join("")}</div>
+<div class="stats"><div class="stat"><b>${Object.keys(state.done).length} / 4</b>مأموریت تکمیل‌شده</div><div class="stat"><b>${state.score}</b>مجموع امتیاز آموزشی</div><div class="stat"><b>${state.safety}</b>امتیاز ایمنی</div></div>
+<button class="btn ghost" onclick="resetAll()">↺ شروع دوباره‌ی همه</button></div>`;
+document.getElementById("lv").value=state.level;
+}
+else if(state.screen==="case"){
+const steps=qs(state.device,state.level);const st=steps[state.step];const pct=Math.round(state.step/steps.length*100);
+app.innerHTML=`<div class="card"><div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px"><span class="badge">CASE / ${SCENARIOS[state.device].title}</span><span class="badge">مرحله ${state.step+1} از ${steps.length}</span><span class="badge ${state.safety<0?"warn":""}">ایمنی: ${state.safety}</span><span class="badge">امتیاز: ${state.score}</span></div>
+<div class="progress"><div style="width:${pct}%"></div></div>
+<h2 style="margin:10px 0">${st.q}</h2><p style="opacity:.7;line-height:2">💡 راهنما: ${st.d}</p>
+${st.opts.map((o,i)=>`<button class="option" onclick="answer(${i})">${["الف","ب","ج"][i]||(i+1)} — ${o.t}</button>`).join("")}
+<button class="btn danger" onclick="goHome()">انصراف</button></div>`;
+}
+else if(state.screen==="feedback"){
+const last=state.path[state.path.length-1];
+const cls=last.gain>=20?"good":(last.gain<=2?"bad":"mid");
+app.innerHTML=`<div class="card"><h2>${last.gain>=20?"✅ تصمیم درست":"⚠️ نیاز به بازبینی"}</h2>
+<div class="feedback ${cls}"><b>بازخورد آموزشی:</b> ${last.feedback}<br><b>تحلیل مسیر:</b> ${last.cause}<br><b>امتیاز:</b> +${last.gain} | <b>ایمنی:</b> ${last.safe>=0?"+":""}${last.safe}</div>
+<button class="btn" onclick="nextStep()">مرحله‌ی بعد ←</button></div>`;
+}
+else if(state.screen==="report"){
+const pct=Math.round(state.score/(state.path.length*20)*100);
+let grade=pct>=85?"ارزیابی: عملکرد حرفه‌ای ⭐":pct>=60?"ارزیابی: قابل قبول با نیاز به مرور":"ارزیابی: نیاز به آموزش مجدد";
+let rows=state.path.map((p,i)=>`<tr><td>${i+1}</td><td>${p.q}</td><td>${p.choice}</td><td>${p.gain} / ایمنی ${p.safe}</td><td>${p.feedback} ${p.cause}</td></tr>`).join("");
+let errors=state.path.filter(p=>p.gain<15);
+let errTxt=errors.length?errors.map(e=>"• "+e.feedback).join("<br>"):"خطای مهمی ثبت نشد. آفرین!";
+app.innerHTML=`<div class="card" id="reportCard"><h2>📋 گزارش اختصاصی عملکرد — ${SCENARIOS[state.device].title}</h2>
+<p style="opacity:.7">سطح: ${state.level==="easy"?"آسان":state.level==="medium"?"متوسط":"پیشرفته"} | تاریخ: ${new Date().toLocaleDateString("fa-IR")}</p>
+<div class="stats"><div class="stat"><b>${state.score}</b>امتیاز فنی</div><div class="stat"><b>${state.safety}</b>امتیاز ایمنی</div><div class="stat"><b>٪${pct}</b>${grade}</div></div>
+<h3>۱) مسیر تصمیم‌گیری</h3><table><tr><th>مرحله</th><th>سؤال</th><th>انتخاب شما</th><th>نمره</th><th>تحلیل</th></tr>${rows}</table>
+<h3 style="margin-top:14px">۲) تحلیل خطاها</h3><p style="line-height:2.2">${errTxt}</p>
+<h3>۳) نکته‌ی فنی و ایمنی</h3><p style="line-height:2.2">${techNote(state.device)}</p>
+<h3>۴) پیشنهاد بررسی بعدی</h3><p style="line-height:2.2">${nextStepTxt(state.device)}</p>
+<div class="no-print" style="margin-top:14px"><button class="btn" onclick="window.print()">🖨️ چاپ / PDF</button><button class="btn ghost" onclick="downloadReport()">⬇️ دانلود گزارش</button><button class="btn ghost" onclick="goHome()">🏠 مأموریت بعدی</button><button class="btn danger" onclick="retry()">↺ شروع دوباره</button></div></div>`;
+}
+}
+function techNote(d){return{ecg:"نکته‌ی فنی ECG: امپدانس پوست باید زیر 5kΩ باشد؛ کابل‌ها را دور از کابل برق رد کن؛ تست نشتی الکتریکی سالانه (＜100µA). نکته‌ی ایمنی: هرگز گین و فیلتر را برای پنهان‌کردن نویز تغییر نده.",spo2:"نکته‌ی فنی SpO2: دو طول‌موج 660/940nm؛ حرکت، نور محیط و رنگ مانع دقت است. نکته‌ی ایمنی: عدد مشکوک هرگز مبنای تغییر اکسیژن‌درمانی نیست؛ با SQI و معاینه تطبیق بده.",pump:"نکته‌ی فنی پمپ: دقت معمول ±5٪؛ سنسور Air و Occlusion اینترلاک ایمنی‌اند و bypass ممنوع. نکته‌ی ایمنی: هواگیری کامل، تطبیق ml/h با دستور کتبی و Drug Library الزامی است.",esu:"نکته‌ی فنی ESU: فرکانس 300kHz-3MHz؛ پلیت (REM) مدار برگشت است و سوختگی از تماس ناقص می‌آید. نکته‌ی ایمنی: پلیت روی عضله‌ی تمیز، دور از ایمپلنت؛ الکل باید کامل خشک شود (مثلث آتش)."}[d];}
+function nextStepTxt(d){return{ecg:"تست کابل با مولتی‌متر، تست نشتی الکتریکی، بازبینی PM سه‌ماهه و آموزش آماده‌سازی پوست به پرستاران.",spo2:"تست با شبیه‌ساز SpO2، موجودی پروب در سایزهای مختلف، آموزش تطبیق پروب و SQI.",pump:"کالیبراسیون دبی با آنالایزر تزریق، تست باتری، بازبینی Drug Library.",esu:"تست توان با آنالایزر ESU، تست REM، چک‌لیست اتاق عمل و آموزش تیم جراحی."}[d];}
+function setLevel(v){state.level=v;render();}
+function startCase(d){state.device=d;state.step=0;state.path=[];state.score=0;state.safety=0;state.screen="case";render();window.scrollTo(0,0);}
+function answer(i){const steps=qs(state.device,state.level);const st=steps[state.step];const o=st.opts[i];state.score+=o.s;state.safety+=o.safe;state.path.push({q:st.q,choice:o.t,gain:o.s,safe:o.safe,feedback:o.f,cause:o.c});state.screen="feedback";render();window.scrollTo(0,0);}
+function nextStep(){const steps=qs(state.device,state.level);state.step++;if(state.step>=steps.length){state.screen="report";state.done[state.device]=true;save();}else state.screen="case";render();window.scrollTo(0,0);}
+function goHome(){state.screen="home";render();}
+function retry(){startCase(state.device);}
+function resetAll(){localStorage.removeItem("medi_adv");state.done={};state.score=0;state.safety=0;goHome();}
+function downloadReport(){let txt=`MEDI-DECISION REPORT - ${SCENARIOS[state.device].title}\nLevel: ${state.level}\nScore: ${state.score} | Safety: ${state.safety}\n\n`;state.path.forEach((p,i)=>{txt+=`${i+1}. ${p.q}\nChoice: ${p.choice}\nScore: ${p.gain} Safety:${p.safe}\n${p.feedback} ${p.cause}\n\n`;});txt+=techNote(state.device)+"\n"+nextStepTxt(state.device);const b=new Blob([txt],{type:"text/plain;charset=utf-8"});const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="medi-report.txt";a.click();}
+render();
+</script>
 </body>
 </html>
