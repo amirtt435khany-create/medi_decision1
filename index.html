@@ -1,0 +1,1224 @@
+
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#071321">
+  <meta name="description" content="شبیه‌ساز آموزشی تصمیم‌گیری در مهندسی پزشکی">
+  <title>MEDI-DECISION | شبیه‌ساز مهندسی پزشکی</title>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap');
+
+    :root {
+      --bg: #071321;
+      --panel: #0e2033;
+      --panel2: #122941;
+      --cyan: #45def3;
+      --blue: #3988ff;
+      --text: #f2f7ff;
+      --muted: #9bb0c6;
+      --border: rgba(140, 190, 230, .16);
+      --green: #55e5b0;
+      --orange: #ffc078;
+      --red: #ff8192;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Vazirmatn", Tahoma, sans-serif;
+      background:
+        radial-gradient(ellipse at 15% 0%, #123554 0, transparent 42%),
+        radial-gradient(ellipse at 90% 70%, #102640 0, transparent 40%),
+        var(--bg);
+      color: var(--text);
+      line-height: 1.9;
+    }
+
+    button, input { font: inherit; }
+    button { cursor: pointer; }
+
+    .container {
+      width: min(920px, 92%);
+      margin: auto;
+      padding: 24px 0 48px;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 42px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 1.05rem;
+      font-weight: 800;
+      letter-spacing: .3px;
+    }
+
+    .logo {
+      width: 46px;
+      height: 46px;
+      display: grid;
+      place-items: center;
+      border-radius: 14px;
+      color: var(--cyan);
+      border: 1px solid #2c829c;
+      background: #102c42;
+      font-size: 1.35rem;
+    }
+
+    .status {
+      color: var(--cyan);
+      font-size: .78rem;
+      border: 1px solid #24566d;
+      border-radius: 99px;
+      padding: 5px 12px;
+      white-space: nowrap;
+    }
+
+    .hero {
+      padding: 34px 0 28px;
+      animation: appear .4s ease;
+    }
+
+    .eyebrow {
+      color: var(--cyan);
+      font-size: .82rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+
+    h1 {
+      font-size: clamp(2rem, 6vw, 3.7rem);
+      line-height: 1.35;
+      margin: 14px 0;
+    }
+
+    h1 span {
+      color: var(--cyan);
+    }
+
+    .intro {
+      color: var(--muted);
+      max-width: 650px;
+      font-size: 1rem;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 16px;
+      margin: 28px 0;
+    }
+
+    .panel {
+      background: linear-gradient(145deg, #10263b, #0b1929);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 24px;
+    }
+
+    .visual {
+      min-height: 230px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background:
+        radial-gradient(circle, rgba(69, 222, 243, .12), transparent 65%),
+        #0b1a2b;
+      overflow: hidden;
+    }
+
+    .pulse {
+      font-size: 3.5rem;
+      color: var(--cyan);
+      text-shadow: 0 0 28px #2087bd;
+      animation: glow 2s infinite alternate;
+    }
+
+    .signal {
+      width: 100%;
+      max-width: 260px;
+      height: 50px;
+      margin-top: 8px;
+    }
+
+    .signal path {
+      fill: none;
+      stroke: var(--cyan);
+      stroke-width: 2.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .features {
+      display: grid;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .feature {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #dce9f6;
+      font-size: .9rem;
+    }
+
+    .feature span {
+      color: var(--green);
+    }
+
+    .btn {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      border: 0;
+      border-radius: 12px;
+      padding: 12px 22px;
+      font-weight: 700;
+      transition: .2s;
+    }
+
+    .btn-primary {
+      color: #031722;
+      background: linear-gradient(110deg, var(--cyan), #78b7ff);
+      box-shadow: 0 6px 25px rgba(69, 222, 243, .13);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(69, 222, 243, .25);
+    }
+
+    .btn-secondary {
+      background: #162b40;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .btn:disabled {
+      opacity: .35;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .full { width: 100%; }
+
+    .screen {
+      display: none;
+      animation: appear .35s ease;
+    }
+
+    .screen.active { display: block; }
+
+    .progress-box {
+      background: #0e2033;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 17px 20px;
+      margin-bottom: 22px;
+    }
+
+    .progress-info {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      font-size: .85rem;
+      margin-bottom: 10px;
+    }
+
+    .muted { color: var(--muted); }
+
+    .progress-track {
+      height: 6px;
+      border-radius: 99px;
+      overflow: hidden;
+      background: #21364b;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0;
+      background: linear-gradient(90deg, var(--blue), var(--cyan));
+      border-radius: inherit;
+      transition: width .35s ease;
+    }
+
+    .step-label {
+      color: var(--cyan);
+      font-size: .8rem;
+      font-weight: 700;
+    }
+
+    h2 {
+      font-size: clamp(1.4rem, 4vw, 2rem);
+      line-height: 1.6;
+      margin: 6px 0;
+    }
+
+    .question-desc {
+      color: var(--muted);
+      margin: 8px 0 22px;
+      font-size: .94rem;
+    }
+
+    .options {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 13px;
+    }
+
+    .option {
+      text-align: right;
+      color: var(--text);
+      padding: 18px;
+      background: #0e2033;
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      min-height: 112px;
+      transition: .2s;
+    }
+
+    .option:hover {
+      border-color: #4086a8;
+      background: #122b42;
+      transform: translateY(-2px);
+    }
+
+    .option.selected {
+      border-color: var(--cyan);
+      background: rgba(41, 144, 174, .15);
+      box-shadow: inset 0 0 0 1px rgba(69, 222, 243, .16);
+    }
+
+    .option-icon {
+      display: block;
+      font-size: 1.6rem;
+      margin-bottom: 5px;
+    }
+
+    .option-title {
+      display: block;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .option-desc {
+      display: block;
+      color: var(--muted);
+      font-size: .8rem;
+      line-height: 1.8;
+    }
+
+    .notice {
+      padding: 14px 16px;
+      background: rgba(255, 192, 120, .07);
+      border: 1px solid rgba(255, 192, 120, .2);
+      color: #f5d6b0;
+      border-radius: 12px;
+      font-size: .84rem;
+      margin-top: 22px;
+    }
+
+    .step-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: space-between;
+      margin-top: 24px;
+    }
+
+    .step-actions .btn { min-width: 120px; }
+
+    .result-header {
+      text-align: center;
+      padding: 28px 10px;
+    }
+
+    .result-icon {
+      display: grid;
+      place-items: center;
+      margin: 0 auto 14px;
+      width: 82px;
+      height: 82px;
+      border-radius: 50%;
+      color: var(--cyan);
+      font-size: 2.4rem;
+      background: #12324a;
+      border: 1px solid #246a86;
+    }
+
+    .score {
+      font-size: 3rem;
+      font-weight: 800;
+      color: var(--cyan);
+      line-height: 1.3;
+    }
+
+    .score small {
+      font-size: .95rem;
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    .result-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin: 18px 0;
+    }
+
+    .metric {
+      background: #102439;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px 12px;
+      text-align: center;
+    }
+
+    .metric strong {
+      display: block;
+      font-size: 1.45rem;
+      color: var(--cyan);
+    }
+
+    .metric span {
+      color: var(--muted);
+      font-size: .78rem;
+    }
+
+    .result-section { margin-top: 18px; }
+
+    .result-section h3 {
+      margin: 0 0 12px;
+      font-size: 1.05rem;
+    }
+
+    .report-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .report-list li {
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+      color: #d5e2ef;
+      font-size: .9rem;
+    }
+
+    .report-list li:last-child { border: 0; }
+
+    .report-list b { color: var(--cyan); }
+
+    .advice {
+      padding: 16px;
+      background: rgba(85, 229, 176, .07);
+      border: 1px solid rgba(85, 229, 176, .2);
+      border-radius: 13px;
+      font-size: .9rem;
+    }
+
+    .footer-note {
+      color: var(--muted);
+      font-size: .78rem;
+      text-align: center;
+      margin-top: 28px;
+    }
+
+    .hidden { display: none !important; }
+
+    @keyframes appear {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes glow {
+      from { opacity: .75; }
+      to { opacity: 1; text-shadow: 0 0 35px #2087bd; }
+    }
+
+    @media (max-width: 620px) {
+      header { margin-bottom: 24px; }
+      .hero-grid { grid-template-columns: 1fr; }
+      .visual { min-height: 170px; }
+      .options { grid-template-columns: 1fr; }
+      .option { min-height: auto; }
+      .result-grid { grid-template-columns: 1fr; }
+      .metric { display: flex; justify-content: space-between; align-items: center; }
+      .panel { padding: 18px; }
+      .step-actions .btn { min-width: 0; padding: 10px 15px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: .01ms !important;
+        transition-duration: .01ms !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+
+    <header>
+      <div class="brand">
+        <div class="logo">✚</div>
+        <div>
+          MEDI-DECISION
+          <div class="muted" style="font-size:.72rem;font-weight:400">
+            Biomedical Engineering Simulator
+          </div>
+        </div>
+      </div>
+      <div class="status">● حالت آموزشی</div>
+    </header>
+
+    <!-- صفحه شروع -->
+    <section id="home" class="screen active">
+      <div class="hero">
+        <div class="eyebrow">INTERACTIVE CASE SIMULATION</div>
+        <h1>تصمیم درست،<br><span>تفاوت بزرگ</span></h1>
+        <p class="intro">
+          وارد نقش کارشناس مهندسی پزشکی شو. یک پرونده شبیه‌سازی‌شده
+          را بررسی کن، تصمیم بگیر و در پایان گزارش عملکرد اختصاصی خودت
+          را دریافت کن.
+        </p>
+
+        <div class="hero-grid">
+          <div class="panel visual">
+            <div class="pulse">⌁</div>
+            <svg class="signal" viewBox="0 0 260 50" aria-label="نمایش گرافیکی سیگنال">
+              <path d="M0 26 H38 L48 22 L58 30 L70 26 H92 L104 4 L116 45 L130 16 L140 26 H180 L190 20 L200 29 H260"/>
+            </svg>
+            <div class="muted" style="font-size:.8rem;margin-top:10px">
+              BIOMEDICAL SYSTEM // ONLINE
+            </div>
+          </div>
+
+          <div class="panel">
+            <h3 style="margin-top:0">در این پرونده چه می‌کنی؟</h3>
+            <div class="features">
+              <div class="feature"><span>✓</span> بررسی علائم دستگاه</div>
+              <div class="feature"><span>✓</span> انتخاب مسیر عیب‌یابی</div>
+              <div class="feature"><span>✓</span> ارزیابی تصمیم‌های ایمنی</div>
+              <div class="feature"><span>✓</span> دریافت گزارش اختصاصی</div>
+            </div>
+          </div>
+        </div>
+
+        <button class="btn btn-primary full" id="startBtn">
+          شروع شبیه‌سازی ←
+        </button>
+        <div class="notice">
+          این پروژه صرفاً آموزشی است. در محیط درمانی واقعی، ایمنی بیمار،
+          دستورالعمل سازنده و رویه‌های مصوب بیمارستان در اولویت هستند.
+        </div>
+      </div>
+    </section>
+
+    <!-- صفحه مراحل -->
+    <section id="quiz" class="screen">
+      <div class="progress-box">
+        <div class="progress-info">
+          <span id="progressLabel">مرحله ۱ از ۵</span>
+          <span id="progressPercent" class="muted">۲۰٪</span>
+        </div>
+        <div
+          class="progress-track"
+          role="progressbar"
+          aria-label="پیشرفت مراحل"
+          aria-valuemin="0"
+          aria-valuemax="100"
+          aria-valuenow="0"
+          id="progressBar"
+        >
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="step-label" id="stepLabel">CASE / 01</div>
+        <h2 id="questionTitle">انتخاب پرونده</h2>
+        <p class="question-desc" id="questionDesc"></p>
+
+        <div class="options" id="options"></div>
+
+        <div class="notice" id="stepNotice">
+          گزینه‌ها را با توجه به اطلاعات سناریو انتخاب کن.
+        </div>
+
+        <div class="step-actions">
+          <button class="btn btn-secondary" id="backBtn">→ مرحله قبل</button>
+          <button class="btn btn-primary" id="nextBtn" disabled>
+            مرحله بعد ←
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- صفحه نتیجه -->
+    <section id="result" class="screen">
+      <div class="panel">
+        <div class="result-header">
+          <div class="result-icon" id="resultIcon">✦</div>
+          <div class="eyebrow">YOUR CASE REPORT</div>
+          <h2 id="resultTitle">گزارش نهایی</h2>
+          <p id="resultSubtitle" class="muted"></p>
+          <div class="score">
+            <span id="scoreValue">0</span>
+            <small>از ۱۰۰ امتیاز</small>
+          </div>
+        </div>
+
+        <div class="result-grid">
+          <div class="metric">
+            <span>انتخاب‌های ثبت‌شده</span>
+            <strong id="answerCount">0</strong>
+          </div>
+          <div class="metric">
+            <span>امتیاز ایمنی</span>
+            <strong id="safetyValue">0</strong>
+          </div>
+          <div class="metric">
+            <span>وضعیت گزارش</span>
+            <strong id="gradeValue" style="font-size:1rem">—</strong>
+          </div>
+        </div>
+
+        <div class="result-section">
+          <h3>مسیر تصمیم‌گیری تو</h3>
+          <ul class="report-list" id="reportList"></ul>
+        </div>
+
+        <div class="result-section">
+          <h3>تحلیل عملکرد</h3>
+          <div class="advice" id="analysisText"></div>
+        </div>
+
+        <div class="result-section">
+          <h3>پیشنهاد آموزشی اختصاصی</h3>
+          <div class="panel" id="recommendation" style="padding:16px"></div>
+        </div>
+
+        <div class="notice">
+          این امتیاز یک شاخص آموزشی مبتنی بر قواعد همین شبیه‌ساز است؛
+          آزمون صلاحیت حرفه‌ای یا تأیید ایمنی واقعی دستگاه نیست.
+        </div>
+
+        <div class="step-actions" style="flex-wrap:wrap">
+          <button class="btn btn-secondary" id="downloadBtn">
+            ↓ دانلود گزارش
+          </button>
+          <button class="btn btn-primary" id="restartBtn">
+            شروع پرونده جدید ↻
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <div class="footer-note">
+      MEDI-DECISION · پروژه آموزشی مهندسی پزشکی · بدون ثبت اطلاعات در سرور
+    </div>
+  </div>
+
+  <script>
+    "use strict";
+
+    // هر گزینه شامل عنوان، توضیح، امتیاز و شناسه است.
+    // امتیازها قواعد آموزشی این پروژه هستند، نه استاندارد بالینی.
+
+    const steps = [
+      {
+        title: "پرونده را انتخاب کن",
+        desc: "کدام دستگاه را در این سناریوی آموزشی بررسی می‌کنی؟",
+        notice: "انتخاب دستگاه، نشانه‌ها و توصیه‌های مراحل بعد را تغییر می‌دهد.",
+        options: [
+          {
+            id: "ecg",
+            icon: "📈",
+            title: "مانیتور ECG",
+            desc: "هشدار ضربان یا اختلال در سیگنال",
+            points: 0
+          },
+          {
+            id: "spo2",
+            icon: "🫁",
+            title: "پالس‌اکسی‌متر",
+            desc: "نمایش ناپایدار یا قطع مقدار SpO₂",
+            points: 0
+          },
+          {
+            id: "pump",
+            icon: "💧",
+            title: "پمپ تزریق",
+            desc: "هشدار انسداد یا اختلال عملکرد",
+            points: 0
+          }
+        ]
+      },
+      {
+        title: "نشانه مشاهده‌شده چیست؟",
+        desc: "نزدیک‌ترین گزینه به نشانه ثبت‌شده در پرونده را انتخاب کن.",
+        options: [
+          {
+            id: "signal",
+            icon: "〰️",
+            title: "سیگنال ناپایدار",
+            desc: "نمایش قطع‌و‌وصل یا داده متغیر",
+            points: 10
+          },
+          {
+            id: "alarm",
+            icon: "🔔",
+            title: "هشدار مکرر",
+            desc: "هشدار دستگاه تکرار می‌شود",
+            points: 10
+          },
+          {
+            id: "accessory",
+            icon: "🔌",
+            title: "احتمال مشکل اتصال",
+            desc: "اتصال یا لوازم جانبی مشکوک است",
+            points: 10
+          },
+          {
+            id: "unknown",
+            icon: "❔",
+            title: "علت نامشخص",
+            desc: "اطلاعات کافی برای نتیجه‌گیری ندارم",
+            points: 10
+          }
+        ]
+      },
+      {
+        title: "بررسی اولیه را انتخاب کن",
+        desc: "کدام اقدام اولیه با رویکرد ایمن و مرحله‌ای سازگارتر است؟",
+        options: [
+          {
+            id: "inspect",
+            icon: "🔍",
+            title: "بررسی ظاهری و اتصالات",
+            desc: "مشاهده وضعیت کابل‌ها، اتصالات و لوازم جانبی",
+            points: 20
+          },
+          {
+            id: "ignore",
+            icon: "⏭️",
+            title: "نادیده گرفتن هشدار",
+            desc: "فرض کنم هشدار اهمیت ندارد",
+            points: 0
+          },
+          {
+            id: "restart",
+            icon: "🔄",
+            title: "راه‌اندازی مجدد فوری",
+            desc: "بدون بررسی علت، دستگاه را خاموش و روشن کنم",
+            points: 2
+          },
+          {
+            id: "document",
+            icon: "📝",
+            title: "ثبت نشانه‌ها و شرایط",
+            desc: "ثبت پیام هشدار و شرایط مشاهده‌شده",
+            points: 15
+          }
+        ]
+      },
+      {
+        title: "مسیر بررسی را تعیین کن",
+        desc: "با توجه به یافته‌های اولیه، مسیر مناسب بعدی را انتخاب کن.",
+        options: [
+          {
+            id: "manual",
+            icon: "📚",
+            title: "مراجعه به دستورالعمل سازنده",
+            desc: "بررسی پیام هشدار و مراحل مجاز کاربر",
+            points: 20
+          },
+          {
+            id: "expert",
+            icon: "🧑‍🔧",
+            title: "ارجاع به کارشناس مجاز",
+            desc: "در صورت تداوم مشکل، ارزیابی تخصصی",
+            points: 20
+          },
+          {
+            id: "open",
+            icon: "🛠️",
+            title: "باز کردن دستگاه",
+            desc: "باز کردن دستگاه بدون مجوز یا صلاحیت",
+            points: 0
+          },
+          {
+            id: "guess",
+            icon: "🎯",
+            title: "حدس زدن علت خرابی",
+            desc: "انتخاب علت بدون شواهد کافی",
+            points: 0
+          }
+        ]
+      },
+      {
+        title: "تصمیم ایمنی نهایی",
+        desc: "در این سناریو، مشکل هنوز تأیید نشده است. چه تصمیمی می‌گیری؟",
+        options: [
+          {
+            id: "safe",
+            icon: "🛡️",
+            title: "حفظ ایمنی و پیروی از رویه",
+            desc: "اطلاع به مسئول مربوطه و رعایت دستورالعمل بیمارستان",
+            points: 20
+          },
+          {
+            id: "remove",
+            icon: "🚫",
+            title: "خارج کردن از سرویس در صورت لزوم",
+            desc: "اگر ناایمنی محتمل است، اقدام طبق رویه مصوب",
+            points: 20
+          },
+          {
+            id: "continue",
+            icon: "▶️",
+            title: "ادامه استفاده بدون بررسی",
+            desc: "ادامه کار با وجود مشکل حل‌نشده",
+            points: 0
+          },
+          {
+            id: "report",
+            icon: "📋",
+            title: "ثبت و ارجاع مستند",
+            desc: "ثبت وضعیت، هشدارها و اقدام‌های انجام‌شده",
+            points: 15
+          }
+        ]
+      }
+    ];
+
+    const deviceNames = {
+      ecg: "مانیتور ECG",
+      spo2: "پالس‌اکسی‌متر",
+      pump: "پمپ تزریق"
+    };
+
+    const deviceAdvice = {
+      ecg: "اصول سیگنال ECG، وضعیت الکترودها، اتصالات و تشخیص آرتیفکت را مرور کن. هر بررسی باید مطابق دستورالعمل دستگاه انجام شود.",
+      spo2: "عوامل مؤثر بر کیفیت سیگنال پالس‌اکسی‌متری، جای‌گیری حسگر و محدودیت‌های اندازه‌گیری را مطالعه کن.",
+      pump: "مفهوم هشدار انسداد، مجموعه تزریق، رویه‌های ایمنی و دستورالعمل اختصاصی سازنده را مرور کن. تغییر تنظیمات یا دست‌کاری دستگاه بدون صلاحیت مجاز نیست."
+    };
+
+    const state = {
+      step: 0,
+      answers: {}
+    };
+
+    const $ = id => document.getElementById(id);
+
+    function showScreen(id) {
+      document.querySelectorAll(".screen").forEach(screen => {
+        screen.classList.remove("active");
+      });
+      $(id).classList.add("active");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function start() {
+      state.step = 0;
+      state.answers = {};
+      showScreen("quiz");
+      renderStep();
+    }
+
+    function getOptions(stepIndex) {
+      const base = steps[stepIndex];
+
+      // تغییر گزینه‌ها بر اساس دستگاه انتخاب‌شده
+      if (stepIndex === 1) {
+        const device = state.answers[0];
+
+        if (device === "ecg") {
+          return [
+            {
+              id: "signal",
+              icon: "〰️",
+              title: "سیگنال ECG نامنظم",
+              desc: "موج نمایش‌داده‌شده ناپایدار است",
+              points: 10
+            },
+            {
+              id: "alarm",
+              icon: "🔔",
+              title: "هشدار لید یا ضربان",
+              desc: "پیام هشدار روی مانیتور دیده می‌شود",
+              points: 10
+            },
+            {
+              id: "accessory",
+              icon: "🔌",
+              title: "اتصال الکترود مشکوک",
+              desc: "احتمال مشکل اتصال وجود دارد",
+              points: 10
+            },
+            {
+              id: "unknown",
+              icon: "❔",
+              title: "علت نامشخص",
+              desc: "برای نتیجه‌گیری اطلاعات کافی نیست",
+              points: 10
+            }
+          ];
+        }
+
+        if (device === "spo2") {
+          return [
+            {
+              id: "signal",
+              icon: "〰️",
+              title: "مقدار متغیر",
+              desc: "مقدار نمایش‌داده‌شده پایدار نیست",
+              points: 10
+            },
+            {
+              id: "alarm",
+              icon: "🔔",
+              title: "هشدار حسگر",
+              desc: "دستگاه پیام هشدار نشان می‌دهد",
+              points: 10
+            },
+            {
+              id: "accessory",
+              icon: "🔌",
+              title: "اتصال حسگر مشکوک",
+              desc: "اتصال یا جای‌گیری حسگر نیاز به بررسی دارد",
+              points: 10
+            },
+            {
+              id: "unknown",
+              icon: "❔",
+              title: "علت نامشخص",
+              desc: "برای نتیجه‌گیری اطلاعات کافی نیست",
+              points: 10
+            }
+          ];
+        }
+
+        return [
+          {
+            id: "signal",
+            icon: "〰️",
+            title: "هشدار عملکرد",
+            desc: "عملکرد دستگاه نیازمند بررسی است",
+            points: 10
+          },
+          {
+            id: "alarm",
+            icon: "🔔",
+            title: "هشدار انسداد",
+            desc: "پیام انسداد در سناریو نمایش داده می‌شود",
+            points: 10
+          },
+          {
+            id: "accessory",
+            icon: "🔌",
+            title: "مجموعه تزریق مشکوک",
+            desc: "مسیر یا اتصالات نیازمند بررسی هستند",
+            points: 10
+          },
+          {
+            id: "unknown",
+            icon: "❔",
+            title: "علت نامشخص",
+            desc: "اطلاعات کافی برای نتیجه‌گیری ندارم",
+            points: 10
+          }
+        ];
+      }
+
+      if (stepIndex === 2) {
+        const symptom = state.answers[1];
+
+        if (symptom === "accessory") {
+          return [
+            {
+              id: "inspect",
+              icon: "🔍",
+              title: "بررسی ظاهری اتصال",
+              desc: "بررسی وضعیت اتصالات طبق دستورالعمل",
+              points: 20
+            },
+            {
+              id: "document",
+              icon: "📝",
+              title: "ثبت نشانه‌ها",
+              desc: "ثبت پیام هشدار و شرایط مشاهده‌شده",
+              points: 15
+            },
+            {
+              id: "ignore",
+              icon: "⏭️",
+              title: "نادیده گرفتن مشکل",
+              desc: "ادامه کار بدون بررسی",
+              points: 0
+            },
+            {
+              id: "restart",
+              icon: "🔄",
+              title: "راه‌اندازی مجدد فوری",
+              desc: "بدون بررسی علت",
+              points: 2
+            }
+          ];
+        }
+
+        return base.options;
+      }
+
+      return base.options;
+    }
+
+    function renderStep() {
+      const i = state.step;
+      const step = steps[i];
+      const options = getOptions(i);
+      const selected = state.answers[i];
+
+      $("stepLabel").textContent =
+        "CASE / " + String(i + 1).padStart(2, "0");
+
+      $("questionTitle").textContent = step.title;
+      $("questionDesc").textContent = step.desc;
+      $("stepNotice").textContent = step.notice ||
+        "یک گزینه را انتخاب کن. انتخاب تو در گزارش نهایی ثبت خواهد شد.";
+
+      $("progressLabel").textContent = `مرحله ${i + 1} از ${steps.length}`;
+      const percent = Math.round(((i + 1) / steps.length) * 100);
+      $("progressPercent").textContent = percent + "٪";
+      $("progressFill").style.width = percent + "%";
+      $("progressBar").setAttribute("aria-valuenow", percent);
+
+      $("options").innerHTML = "";
+
+      options.forEach(option => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "option" +
+          (selected === option.id ? " selected" : "");
+
+        button.setAttribute("aria-pressed", selected === option.id);
+
+        const icon = document.createElement("span");
+        icon.className = "option-icon";
+        icon.textContent = option.icon;
+
+        const title = document.createElement("span");
+        title.className = "option-title";
+        title.textContent = option.title;
+
+        const desc = document.createElement("span");
+        desc.className = "option-desc";
+        desc.textContent = option.desc;
+
+        button.append(icon, title, desc);
+
+        button.addEventListener("click", () => {
+          state.answers[i] = option.id;
+
+          // پاسخ مراحل بعد از تغییر انتخاب قبلی حذف می‌شود.
+          for (let j = i + 1; j < steps.length; j++) {
+            delete state.answers[j];
+          }
+
+          renderStep();
+        });
+
+        $("options").appendChild(button);
+      });
+
+      $("backBtn").disabled = i === 0;
+      $("nextBtn").disabled = !selected;
+      $("nextBtn").textContent =
+        i === steps.length - 1 ? "مشاهده گزارش ←" : "مرحله بعد ←";
+    }
+
+    function getSelectedOption(stepIndex) {
+      const options = getOptions(stepIndex);
+      return options.find(
+        option => option.id === state.answers[stepIndex]
+      );
+    }
+
+    function calculateResult() {
+      let earned = 0;
+      let maximum = 0;
+
+      steps.forEach((step, index) => {
+        const selected = getSelectedOption(index);
+        if (!selected) return;
+
+        const options = getOptions(index);
+        const best = Math.max(...options.map(o => o.points));
+
+        earned += selected.points;
+        maximum += best;
+      });
+
+      const score = maximum
+        ? Math.round((earned / maximum) * 100)
+        : 0;
+
+      const safetyOption = getSelectedOption(4);
+      const safetyScore = safetyOption
+        ? Math.round((safetyOption.points / 20) * 100)
+        : 0;
+
+      return { score, safetyScore };
+    }
+
+    function buildReport() {
+      const { score, safetyScore } = calculateResult();
+      const device = state.answers[0];
+      const symptom = getSelectedOption(1);
+      const initial = getSelectedOption(2);
+      const route = getSelectedOption(3);
+      const safety = getSelectedOption(4);
+
+      let title;
+      let subtitle;
+      let analysis;
+      let grade;
+
+      if (score >= 85) {
+        title = "تحلیل‌گر دقیق";
+        subtitle = "در این سناریو، رویکرد تو با اصول آموزشی امتیازدهی سازگاری بالایی دارد.";
+        analysis = "انتخاب‌های تو در مجموع با بررسی مرحله‌ای و توجه به ایمنی سازگار بودند. در محیط واقعی نیز باید شواهد، دستورالعمل سازنده و رویه مصوب ملاک تصمیم باشند.";
+        grade = "عالی";
+      } else if (score >= 65) {
+        title = "کارشناس در حال پیشرفت";
+        subtitle = "بخش مهمی از تصمیم‌ها مناسب بود؛ چند نکته برای مرور باقی مانده است.";
+        analysis = "مسیر انتخابی تو نقاط قوتی دارد، اما بهتر است پیش از هر اقدام، شواهد موجود را ثبت کنی و از حدس زدن علت خرابی پرهیز کنی.";
+        grade = "خوب";
+      } else {
+        title = "نیازمند بررسی بیشتر";
+        subtitle = "این پرونده فرصت خوبی برای مرور اصول عیب‌یابی و ایمنی است.";
+        analysis = "برخی انتخاب‌ها با رویکرد محتاطانه و مستند فاصله داشتند. هشدار را نادیده نگیر، دستگاه را بدون صلاحیت باز نکن و در شرایط نامطمئن از رویه ارجاع استفاده کن.";
+        grade = "نیازمند مرور";
+      }
+
+      $("resultIcon").textContent = score >= 85 ? "✦" : "⌁";
+      $("resultTitle").textContent = title;
+      $("resultSubtitle").textContent = subtitle;
+      $("scoreValue").textContent = score;
+      $("answerCount").textContent = Object.keys(state.answers).length;
+      $("safetyValue").textContent = safetyScore;
+      $("gradeValue").textContent = grade;
+      $("analysisText").textContent = analysis;
+      $("recommendation").textContent = deviceAdvice[device];
+
+      const reportItems = [
+        ["دستگاه انتخابی", deviceNames[device]],
+        ["نشانه ثبت‌شده", symptom.title],
+        ["بررسی اولیه", initial.title],
+        ["مسیر بررسی", route.title],
+        ["تصمیم ایمنی", safety.title]
+      ];
+
+      $("reportList").innerHTML = "";
+
+      reportItems.forEach(([label, value]) => {
+        const li = document.createElement("li");
+        const b = document.createElement("b");
+        b.textContent = label + ": ";
+        li.append(b, document.createTextNode(value));
+        $("reportList").appendChild(li);
+      });
+    }
+
+    function showResult() {
+      buildReport();
+      showScreen("result");
+    }
+
+    function downloadReport() {
+      const { score, safetyScore } = calculateResult();
+      const device = deviceNames[state.answers[0]];
+
+      const lines = [
+        "MEDI-DECISION | گزارش شبیه‌سازی آموزشی",
+        "========================================",
+        "دستگاه: " + device,
+        "امتیاز کل: " + score + " از 100",
+        "امتیاز ایمنی: " + safetyScore + " از 100",
+        "",
+        "مسیر تصمیم‌گیری:"
+      ];
+
+      steps.forEach((step, index) => {
+        const selected = getSelectedOption(index);
+        if (selected) {
+          lines.push((index + 1) + ". " + step.title + ": " + selected.title);
+        }
+      });
+
+      lines.push(
+        "",
+        "پیشنهاد آموزشی:",
+        deviceAdvice[state.answers[0]],
+        "",
+        "این گزارش صرفاً آموزشی است و تأیید صلاحیت حرفه‌ای یا ایمنی دستگاه نیست."
+      );
+
+      // BOM برای نمایش صحیح فارسی در برخی برنامه‌های متنی
+      const blob = new Blob(
+        ["\uFEFF" + lines.join("\n")],
+        { type: "text/plain;charset=utf-8" }
+      );
+
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "medi-decision-report.txt";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    }
+
+    $("startBtn").addEventListener("click", start);
+
+    $("nextBtn").addEventListener("click", () => {
+      if (state.answers[state.step] === undefined) return;
+
+      if (state.step < steps.length - 1) {
+        state.step++;
+        renderStep();
+      } else {
+        showResult();
+      }
+    });
+
+    $("backBtn").addEventListener("click", () => {
+      if (state.step > 0) {
+        state.step--;
+        renderStep();
+      }
+    });
+
+    $("restartBtn").addEventListener("click", start);
+    $("downloadBtn").addEventListener("click", downloadReport);
+
+  </script>
+</body>
+</html>
